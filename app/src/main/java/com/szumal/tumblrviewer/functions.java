@@ -32,7 +32,7 @@ public class functions extends AppCompatActivity {
     public static List<Bitmap> bitmaps = new ArrayList<Bitmap>();
     public static List<singlePost> posts = new ArrayList<singlePost>();
 
-    static void getXML(final LinearLayout lila, final String username, final Context cst){
+    static void getXML(final LinearLayout lila, final Document doc, final Context cst){
 
         Thread thread1 = new Thread() {
             @Override
@@ -40,12 +40,12 @@ public class functions extends AppCompatActivity {
 
                 btnContainer.clear();
                 posts.clear();
-
-                Document doc;
+                try {
+                /*Document doc;
                 String uri =
                         "https://" + username + ".tumblr.com/api/read?num=10";
 
-                try {
+
                     URL url = new URL(uri);
                     HttpURLConnection connection =
                             (HttpURLConnection) url.openConnection();
@@ -57,7 +57,7 @@ public class functions extends AppCompatActivity {
                     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                     DocumentBuilder db = dbf.newDocumentBuilder();
                     doc = db.parse(xml);
-                    doc.getDocumentElement().normalize();
+                    doc.getDocumentElement().normalize();*/
 
                     NodeList nList = doc.getElementsByTagName("post");
 
@@ -88,11 +88,15 @@ public class functions extends AppCompatActivity {
                                 try {
                                     posts.get(posts.size() - 1).setImgurl(eElement.getElementsByTagName("photo-url").item(0).getTextContent());
                                     bitmaps.add(BitmapFactory.decodeStream((new URL(eElement.getElementsByTagName("photo-url").item(0).getTextContent())).openConnection().getInputStream()));
+                                    posts.get(posts.size() - 1).setBtm(BitmapFactory.decodeStream((new URL(eElement.getElementsByTagName("photo-url").item(0).getTextContent())).openConnection().getInputStream()));
                                 } catch (Exception e){
                                     posts.get(posts.size() - 1).setImgurl("");
                                     bitmaps.add(null);
+                                    posts.get(posts.size() - 1).setBtm(null);
+                                    System.out.println("bitmap error " + i + " " + e);
                                 }
                                 posts.get(posts.size() - 1).setDate(eElement.getAttribute("date"));
+                                //System.out.println("bitmaps5: " + eElement.getElementsByTagName("photo-url").item(0).getTextContent());
 
                             } catch (Exception f){
                                 System.out.println(f.toString());
@@ -112,6 +116,8 @@ public class functions extends AppCompatActivity {
                                 });
                                 lila.addView(btnContainer.get(i));
                     }
+
+
                 } catch (Exception e) {
                     System.out.println(e.toString());
                 }

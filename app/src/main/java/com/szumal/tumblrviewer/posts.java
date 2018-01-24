@@ -5,10 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
+import org.w3c.dom.Document;
+
 public class posts extends AppCompatActivity {
 
     String userName;
     LinearLayout linearL;
+
 
     functions fund = new functions();
 
@@ -22,6 +25,11 @@ public class posts extends AppCompatActivity {
 
         linearL = findViewById(R.id.linearL);
 
-        fund.getXML(linearL, userName, this);
+
+        try {
+            fund.getXML(linearL, new AsyncPost().execute(userName).get(), this);
+        }catch (Exception e){
+
+        }
     }
 }

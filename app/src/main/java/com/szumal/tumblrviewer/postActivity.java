@@ -40,8 +40,9 @@ public class postActivity extends AppCompatActivity {
         postTitle.setText("Title: " + postsArray.get(Integer.valueOf(postNr)).getTitle());
         postText.setText("Text: " + postsArray.get(Integer.valueOf(postNr)).getText());
         postTags.setText("Tags: " + postsArray.get(Integer.valueOf(postNr)).getTags());
+        System.out.println("bitmaps1: " + postsArray.get(Integer.valueOf(postNr)).getBtm());
         try {
-            postImageView.setImageBitmap(functions.bitmaps.get(Integer.valueOf(postNr)));
+            postImageView.setImageBitmap(postsArray.get(Integer.valueOf(postNr)).getBtm());
         }catch (Exception e){
             System.out.println("ImageURL" + e.toString());
         }

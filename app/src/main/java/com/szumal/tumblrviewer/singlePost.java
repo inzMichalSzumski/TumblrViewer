@@ -1,5 +1,7 @@
 package com.szumal.tumblrviewer;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by szuma on 19.01.2018.
  */
@@ -7,14 +9,16 @@ package com.szumal.tumblrviewer;
 public class singlePost {
     String title, text, tags, imgurl, date;
     Long id;
+    Bitmap btm;
 
-    public singlePost(Long id, String title, String text, String tags, String imgurl, String date){
+    public singlePost(Long id, String title, String text, String tags, String imgurl, String date, Bitmap btm){
         this.title = title;
         this.text = text;
         this.tags = tags;
         this.imgurl = imgurl;
         this.id = id;
         this.date = date;
+        this.btm = btm;
     }
 
     public singlePost(){};
@@ -43,6 +47,10 @@ public class singlePost {
         return date;
     }
 
+    public Bitmap getBtm() {
+        return btm;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -65,5 +73,9 @@ public class singlePost {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public void setBtm(Bitmap btm) {
+        this.btm = btm;
     }
 }
