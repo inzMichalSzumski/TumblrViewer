@@ -15,7 +15,6 @@ import java.util.List;
 public class postActivity extends AppCompatActivity {
 
     String postNr;
-    URL imageURL;
     TextView postId, postTitle, postText, postTags;
     ImageView postImageView;
     private List<singlePost> postsArray;
@@ -37,19 +36,14 @@ public class postActivity extends AppCompatActivity {
         postsArray = functions.posts;
 
 
-        postId.setText(postsArray.get(Integer.valueOf(postNr)).getId().toString());
-        postTitle.setText(postsArray.get(Integer.valueOf(postNr)).getTitle().toString());
-        postText.setText(postsArray.get(Integer.valueOf(postNr)).getText().toString());
-        postTags.setText(postsArray.get(Integer.valueOf(postNr)).getTags().toString());
+        postId.setText("id: " + postsArray.get(Integer.valueOf(postNr)).getId().toString());
+        postTitle.setText("Title: " + postsArray.get(Integer.valueOf(postNr)).getTitle());
+        postText.setText("Text: " + postsArray.get(Integer.valueOf(postNr)).getText());
+        postTags.setText("Tags: " + postsArray.get(Integer.valueOf(postNr)).getTags());
         try {
-            imageURL = new URL(postsArray.get(Integer.valueOf(postNr)).getImgurl().toString());
-            Bitmap bmp = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
-            postImageView.setImageBitmap(bmp);
+            postImageView.setImageBitmap(functions.bitmaps.get(Integer.valueOf(postNr)));
         }catch (Exception e){
             System.out.println("ImageURL" + e.toString());
         }
     }
-
-
-
 }

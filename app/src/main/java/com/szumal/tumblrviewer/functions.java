@@ -2,6 +2,8 @@ package com.szumal.tumblrviewer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +29,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class functions extends AppCompatActivity {
     public static List<Button> btnContainer = new ArrayList<Button>();
-
+    public static List<Bitmap> bitmaps = new ArrayList<Bitmap>();
     public static List<singlePost> posts = new ArrayList<singlePost>();
 
     static void getXML(final LinearLayout lila, final String username, final Context cst){
@@ -41,7 +43,7 @@ public class functions extends AppCompatActivity {
 
                 Document doc;
                 String uri =
-                        "https://" + username + ".tumblr.com/api/read#_=_";
+                        "https://" + username + ".tumblr.com/api/read?num=10";
 
                 try {
                     URL url = new URL(uri);
@@ -71,7 +73,7 @@ public class functions extends AppCompatActivity {
                                 try {
                                     posts.get(posts.size() - 1).setTitle(eElement.getElementsByTagName("regular-title").item(0).getTextContent());
                                 } catch (Exception e){
-                                    posts.get(posts.size() - 1).setTitle("");
+                                    posts.get(posts.size() - 1).setTitle("No title");
                                 }
                                 try {
                                     posts.get(posts.size() - 1).setText(eElement.getElementsByTagName("regular-body").item(0).getTextContent());
@@ -85,11 +87,13 @@ public class functions extends AppCompatActivity {
                                 }
                                 try {
                                     posts.get(posts.size() - 1).setImgurl(eElement.getElementsByTagName("photo-url").item(0).getTextContent());
+                                    bitmaps.add(BitmapFactory.decodeStream((new URL(eElement.getElementsByTagName("photo-url").item(0).getTextContent())).openConnection().getInputStream()));
                                 } catch (Exception e){
                                     posts.get(posts.size() - 1).setImgurl("");
+                                    bitmaps.add(null);
                                 }
                                 posts.get(posts.size() - 1).setDate(eElement.getAttribute("date"));
-                                
+
                             } catch (Exception f){
                                 System.out.println(f.toString());
                             }
@@ -121,6 +125,4 @@ public class functions extends AppCompatActivity {
             System.out.println(e);
         }
     }
-
-
 }
