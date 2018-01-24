@@ -1,11 +1,11 @@
 package com.szumal.tumblrviewer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -26,15 +26,19 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 
 public class functions extends AppCompatActivity {
-    public List<Button> btnContainer = new ArrayList<Button>();
-    public List<singlePost> posts = new ArrayList<singlePost>();
+    public static List<Button> btnContainer = new ArrayList<Button>();
 
-    List<Button> getXML(final LinearLayout lila, final String username, final Context cst){
+    public static List<singlePost> posts = new ArrayList<singlePost>();
 
+    static void getXML(final LinearLayout lila, final String username, final Context cst){
 
         Thread thread1 = new Thread() {
             @Override
             public void run() {
+
+                btnContainer.clear();
+                posts.clear();
+
                 Document doc;
                 String uri =
                         "https://" + username + ".tumblr.com/api/read#_=_";
@@ -55,7 +59,6 @@ public class functions extends AppCompatActivity {
 
                     NodeList nList = doc.getElementsByTagName("post");
 
-
                     for (int i = 0; i < nList.getLength(); i++) {
 
                         Node nNode = nList.item(i);
@@ -63,7 +66,7 @@ public class functions extends AppCompatActivity {
                             Element eElement = (Element) nNode;
                             try {
 
-                                posts.add(new singlePost());                                
+                                posts.add(new singlePost());
                                 posts.get(posts.size() - 1).setId(Long.parseLong(eElement.getAttribute("id")));
                                 try {
                                     posts.get(posts.size() - 1).setTitle(eElement.getElementsByTagName("regular-title").item(0).getTextContent());
@@ -86,41 +89,38 @@ public class functions extends AppCompatActivity {
                                     posts.get(posts.size() - 1).setImgurl("");
                                 }
                                 posts.get(posts.size() - 1).setDate(eElement.getAttribute("date"));
-
-
-                                //System.out.println("xyz : " + posts.get(posts.size() - 1).getDate());
+                                
                             } catch (Exception f){
                                 System.out.println(f.toString());
                             }
                         }
-
-
                                 btnContainer.add(new Button(cst));
                                 btnContainer.get(i).setText(posts.get(i).getTitle());
-                                //lila.addView(btnContainer[i]);
-
+                                btnContainer.get(i).setTag(String.valueOf(i));
+                                btnContainer.get(i).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        System.out.println(v.getTag());
+                                        Intent _intent = new Intent(v.getContext(), postActivity.class);
+                                        _intent.putExtra("postNr", v.getTag().toString());
+                                        v.getContext().startActivity(_intent);
+                                    }
+                                });
+                                lila.addView(btnContainer.get(i));
                     }
-
-
                 } catch (Exception e) {
                     System.out.println(e.toString());
                 }
-
-
-
-
-                System.out.println("xyz 1 " + btnContainer.size());
-
             }
-
         };
+
         thread1.start();
         try {
             thread1.join();
         }catch (Exception e){
             System.out.println(e);
         }
-        System.out.println("xyz 2 " + btnContainer.size());
-        return btnContainer;
     }
+
+
 }

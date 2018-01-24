@@ -33,15 +33,12 @@ public class posts extends AppCompatActivity {
 
         linearL = findViewById(R.id.linearL);
 
-        posts.add(new singlePost(1l, "tit", "tex", "tag", "imgule", "1.1.1990"));
+        //posts.add(new singlePost(1l, "tit", "tex", "tag", "imgule", "1.1.1990"));
 
-        btnWord = fund.getXML(linearL, userName, this);
+        fund.getXML(linearL, userName, this);
         //functions.buttonMaker(linearL, posts.get(0).title, this);
-        for (int i = 0; i < btnWord.size(); i++){
-            linearL.addView(btnWord.get(i));
 
-        }
-        System.out.println("xyz " + fund.btnContainer.size());
+        //System.out.println("xyz " + fund.btnContainer.size());
         /*btnWord[0] = new Button(this);
         btnWord[0].setText(userName);
         linearL.addView(btnWord[0]);*/
